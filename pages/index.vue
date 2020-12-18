@@ -114,7 +114,7 @@ export default {
         'title': product.gsx$title.$t,
         'image': product.gsx$imgurl.$t,
         'price': product.gsx$price.$t,
-        'count': 1,
+        'count': 1
       }
       this.$store.commit('cart/add', p);
     },

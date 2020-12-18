@@ -8,23 +8,11 @@
             <v-list-item-content>
               <v-list-item-title>{{ product.title }}</v-list-item-title>
               <v-list-item-subtitle>
-                {{ product.count }} {{counter}} * {{ product.price }} {{currency}} = {{product.total}} {{currency}}
+                 {{ product.price }} {{currency}}
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action>
-              <v-menu transition="slide-y-transition" bottom>
-                <template v-slot:activator="{ on }">
-                  <v-btn icon v-on="on"><v-icon>more_vert</v-icon></v-btn>
-                </template>
-                <v-list>
-                  <v-list-item @click="editParams(index)">
-                    <v-list-item-title>Изменить</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item @click="removeFromCart(index)">
-                    <v-list-item-title>Удалить</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
+              <v-btn icon @click="removeFromCart(index)"><v-icon>close</v-icon></v-btn>
             </v-list-item-action>
           </v-list-item>
       <v-divider style="margin-left:110px"></v-divider>

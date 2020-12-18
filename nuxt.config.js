@@ -3,7 +3,7 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   server: {
     port: 5000, // default: 3000
-    host: '192.168.43.246' //'localhost' 
+    host: 'localhost'  //'192.168.43.246' //'localhost' 
   },
   target: 'static',
   
@@ -18,6 +18,10 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'}
     ]
   },
 
