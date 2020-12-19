@@ -3,14 +3,14 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   server: {
     port: 5000, // default: 3000
-    host: 'localhost'  //'192.168.43.246' //'localhost' 
+    host: 'localhost'  //'192.168.43.246' //
   },
   target: 'static',
   
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    titleTemplate: '%s - web-client',
-    title: 'web-client',
+    titleTemplate: '%s - SHOP.BOLO.TJ',
+    title: 'SHOP.BOLO.TJ',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -51,8 +51,10 @@ export default {
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-  axios: {},
-
+  axios: {
+    proxyHeaders: false,
+    credentials: false
+  },
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
     customVariables: ['~/assets/variables.scss'],

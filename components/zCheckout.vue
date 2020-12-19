@@ -57,12 +57,29 @@
         <v-card-text class="text-center">
           <p class="text-center title">Заказ принят!</p>
           <v-icon style="font-size:100px" color="green">check_circle</v-icon>
-          <p>Ваш заказ с номером #{{orderID}} принят на обработку</p>
+          <p>Ваш заказ принят на обработку, скоро наш оператор свяжется с вами для подтверждения заказа.</p>
+        </v-card-text>
+        <v-card-text class="mb-0 pb-0 text-center">
+          <p>Также сами можете связаться с оператором</p>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="#008dd2 darken-1" text large>
-            Спасибо!
+          <a href="https://api.whatsapp.com/send/?phone=992929997453&text=Салом, я оформил заказ с сайта shop.bolo.tj" target="_blank">
+            <v-btn color="primary" text>
+              WhatsApp
+            </v-btn>
+          </a>
+          <a href="https://t.me/muhammad_babolo&text=Салом, я оформил заказ с сайта shop.bolo.tj" target="_blank">
+            <v-btn color="primary" text  nuxt to="https://t.me/muhammad_babolo">
+              Telegram
+            </v-btn>
+          </a>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" outlined large  @click="closeDialog();orderAccepted=false">
+            Спасибо
           </v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -132,45 +149,36 @@ export default {
   
   methods: {
     acceptOrder(){
-      console.log("order");
-      this.$store.commit('cart/clear');
-      this.closeDialog();
+      var postData = {
+        products: this.cartItems,
+        phone: this.orderData.from.prefix + this.orderData.phone,
+        country: this.orderData.from.title,
+        comment: this.orderData.comments,
+        summa: this.productSum
+      };
+      this.postOrder(postData);
+      // console.log(postData);
+      //this.$store.commit('cart/clear');
+      //this.closeDialog();
     },
     closeDialog(){
       this.$emit('closeDialog')
     },
-    postOrder(){
+    postOrder(postData){
       this.loadingBtn = true;
-      var order = {
-        products: this.cartItems,
-        delivery:{
-          type:  this.delivery.type,
-          deliveryCost: this.delivery.deliveryCost
-          },
-        payment:{
-          type: this.payment.type,
-          totalSum: this.productSum+this.delivery.deliveryCost,
-          productSum: this.productSum
-          }
-        };
-      if(this.delivery.type.id==2){
-        order.delivery['address']={
-            country: this.delivery.address.country,
-            region: this.delivery.address.region,
-            street: this.delivery.address.street,
-            houseNumber: this.delivery.address.houseNumber,
-            comments: this.delivery.address.comments
-        }
-      }
-      var path = '/order/new';
-      var data = {'path':path,'data':order};
+      var path = 'https://shop.bolo.tj/simpple-telegram-bot/sendOrder.php';
+      var data = {'path':path,'data':postData};
         this.$store.dispatch('apiAdapter/post', data)
-          .then(res => { 
-              this.orderID = res.data.id;       
+          .then(res => {
+              this.loadingBtn = false;
+              // console.log(res);      
               this.orderAccepted = true;
               this.$store.commit('cart/clear');
+              this.orderData.phone = '';
+              this.orderData.comments = '';
           })
           .catch(e => {
+            console.log(e); 
               this.loadingBtn = false;
               this.errorOnAccept = true;
           });       

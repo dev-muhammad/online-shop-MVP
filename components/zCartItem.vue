@@ -3,7 +3,7 @@
       <v-list-item three-line class="pr-0 my-1">
         <v-list-item-avatar size="100" horizontal class="my-0">
           <v-img style="border-radius:10px" 
-          :src=product.image
+          :src="product.image ? product.image : '/no-photo.png'"
           ></v-img></v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{ product.title }}</v-list-item-title>

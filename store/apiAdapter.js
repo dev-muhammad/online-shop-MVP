@@ -3,6 +3,7 @@ export const actions = {
       return this.$axios.get(path)
     },
     post({commit, dispatch}, data) {
-        return this.$axios.post(data.path, data = data.data)
+      this.$axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+      return this.$axios.post(data.path, data = data.data, {headers: {}})
     }
   };

@@ -1,7 +1,7 @@
 <template>
 <div class="z-shop-cart">
   <div style="position:relative;width:360px;">
-    <v-btn v-show="!cartSheet && cartItems.length" color="primary" fab dark class="cart-btn" @click="cartSheet=true;recount()">
+    <v-btn v-show="!checkoutDialog && !cartSheet && cartItems.length" color="primary" fab dark class="cart-btn" @click="cartSheet=true;recount()">
         <v-badge light :content=cartItems.length bordered color="primary">
             <v-icon>local_mall</v-icon>   
         </v-badge>
@@ -27,7 +27,7 @@
         </v-bottom-sheet>
         </div>
     </template>
-    <v-dialog v-model="checkoutDialog" max-width="500px" persistent>
+    <v-dialog v-model="checkoutDialog" max-width="500px" persistent :fullscreen="$vuetify.breakpoint.mobile">
         <v-card>
             <v-card-title>
                 Оформление заказа

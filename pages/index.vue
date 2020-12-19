@@ -9,14 +9,19 @@
         {{ category }}
       </v-chip>
     </v-chip-group>
-    <v-row justify="center" align="start">
+    <v-row v-show="loading" justify="center" align="start">
+      <v-col v-for="(c,i) in !$vuetify.breakpoint.mobile ? 4 : 1" :key=i cols="12" md="3" sm="4" xs="6">
+      <v-skeleton-loader class="mx-auto" type="image, article, actions"></v-skeleton-loader>
+      </v-col>
+    </v-row>
+    <v-row v-show="!loading" justify="center" align="start">
       <v-col 
-        v-show="selection == 'all' || selection == product.gsx$category.$t" 
+        v-show="selection == 'Все категории' || selection == product.gsx$category.$t" 
         v-for="(product,i) in products" :key=i cols="12" md="3" sm="4" xs="6"
         >
         <v-card>
             <v-img 
-              :src="product.gsx$imgurl.$t ? product.gsx$imgurl.$t: 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg'"
+              :src="product.gsx$imgurl.$t ? product.gsx$imgurl.$t: '/no-photo.png'"
               height="250px"
             ></v-img>
           <v-card-title class="headline">
@@ -39,21 +44,11 @@
       </v-col>
     </v-row>
     <zShopCart></zShopCart>
+    
   </v-container>
 </template>
 <style>
-.animate{
-  animation-name: loading;
-  animation-Duration: 3s;
-  animation-iteration-count: infinite;
-  animation-delay: 0s;
-  animation-timing-function: linear;
-}
-@keyframes loading{
-  0%{transform:rotate(0deg);}
-  50%{transform:rotate(180deg);}
-  100%{transform:rotate(360deg);}
-}
+
 </style>
 <script>
 import zShopCart from '~/components/zShopCart.vue'
@@ -64,9 +59,10 @@ export default {
   },
   data(){
     return{
-      categories: ['all'],
+      categories: ['Все категории'],
       products: [],
-      selection: 'all'
+      selection: 'Все категории',
+      loading: true
     }
   },
   computed: {
@@ -81,11 +77,12 @@ export default {
   methods: {
     loadProducts(){
       var path = 'https://spreadsheets.google.com/feeds/list/1gFF-Aap46zMoAO0NFZBBd-1-0luOU5SeKn_QKhIU25U/1/public/values?alt=json';
+      
       this.$store.dispatch('apiAdapter/get', path)
         .then(res => { 
-          console.log('success')
-          console.log(res);
-          console.log(res.data.feed.entry);
+          // console.log('success')
+          // console.log(res);
+          // console.log(res.data.feed.entry);
           //this.products = res.data.feed.entry;
           this.parseCategories(res.data.feed.entry);
           this.parseProducts(res.data.feed.entry);
@@ -105,7 +102,8 @@ export default {
     parseProducts(feed){
       feed.forEach(element => {
         if(element.gsx$title.$t != ''){
-          this.products.push(element)
+          this.products.push(element);
+          this.loading = false;
         }
       });
     },
@@ -114,6 +112,7 @@ export default {
         'title': product.gsx$title.$t,
         'image': product.gsx$imgurl.$t,
         'price': product.gsx$price.$t,
+        'id': product.gsx$id.$t,
         'count': 1
       }
       this.$store.commit('cart/add', p);
