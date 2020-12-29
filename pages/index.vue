@@ -19,28 +19,7 @@
         v-show="selection == 'Все категории' || selection == product.gsx$category.$t" 
         v-for="(product,i) in products" :key=i cols="12" md="3" sm="4" xs="6"
         >
-        <v-card>
-            <v-img 
-              :src="product.gsx$imgurl.$t ? product.gsx$imgurl.$t: '/no-photo.png'"
-              height="250px"
-            ></v-img>
-          <v-card-title class="headline">
-            <h2 class="headline">
-              {{ product.gsx$title.$t }}
-            </h2>
-            <v-spacer></v-spacer>
-            <span class="title">{{ product.gsx$price.$t }} SMN</span>
-          </v-card-title>
-          <v-divider class="mx-4"></v-divider>
-          <v-card-text>
-            {{ product.gsx$description.$t }}
-          </v-card-text>
-          <v-card-actions>
-            <v-btn block class="white--text" color="primary" @click="addToCart(product)">
-              Добавить в корзину
-            </v-btn>
-          </v-card-actions>
-        </v-card>
+        <zProductCard :product=product @addToCart=addToCart></zProductCard>
       </v-col>
     </v-row>
     <zShopCart></zShopCart>
@@ -52,17 +31,20 @@
 </style>
 <script>
 import zShopCart from '~/components/zShopCart.vue'
+import zProductCard from '~/components/zProductCard.vue'
 
 export default {
   components: {
-    zShopCart
+    zShopCart,
+    zProductCard
   },
   data(){
     return{
       categories: ['Все категории'],
       products: [],
       selection: 'Все категории',
-      loading: true
+      loading: true,
+      moreInfo: []
     }
   },
   computed: {
@@ -104,6 +86,7 @@ export default {
         if(element.gsx$title.$t != ''){
           this.products.push(element);
           this.loading = false;
+          this.moreInfo.push(false);
         }
       });
     },
@@ -117,7 +100,27 @@ export default {
       }
       this.$store.commit('cart/add', p);
     },
-  }  
+  },
+  head () {
+      return {
+        title: 'Онлайн заказ товаров в Джаббор Расулове ',
+        meta: [
+          { hid: 'description', name: 'description', content: 'Babolo Shop - это онлайн сервис для заказа товаров и продуктов' },
+          { hid: 'author', name: 'author', content: 'Babolo Company' },
+          { hid: 'keywords', name: 'keywords', content: 'онлайн заказ, онлайн магазин' },
+          { hid: 'og:title', property: 'og:title', content: 'Онлайн заказ товаров в Джаббор Расулове ' },
+          { hid: 'og:description', property: 'og:description', content: 'Babolo Shop - это онлайн сервис для заказа товаров и продуктов' },
+          { hid: 'og:type', property: 'og:type', content: 'website' },
+          { hid: 'og:site_name', property: 'og:site_name', content: 'shop.bolo.tj' },
+          { hid: 'og:url', property: 'og:url', content: 'www.shop.bolo.tj' },
+          { hid: 'og:image', property: 'og:image', content: 'http://shop.bolo.tj/og.png' },
+          { hid: 'og:image:secure_url', property: 'og:image:secure_url', content: 'https://shop.bolo.tj/og.png' },
+          { hid: 'og:image:type', property: 'og:image:type', content: 'image/png' },
+          { hid: 'og:image:width', property: 'og:image:width', content: '400' },
+          { hid: 'og:image:height', property: 'og:image:height', content: '300' }
+        ]
+      }
+    },  
 
 }
 </script>
