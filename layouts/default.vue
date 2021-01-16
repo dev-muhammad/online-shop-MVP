@@ -23,7 +23,7 @@
               WhatsApp
             </v-btn>
           </a>
-          <a style="text-decoration: none;" href="https://t.me/BaBoloMarket&text=Салом, я получил данный номер с сайта shop.bolo.tj" target="_blank">
+          <a style="text-decoration: none;" href="https://t.me/BaBoloMarket?text=Салом, я получил данный номер с сайта shop.bolo.tj" target="_blank">
             <v-btn color="primary" text>
               Telegram
             </v-btn>

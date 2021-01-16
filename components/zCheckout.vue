@@ -74,7 +74,7 @@
               WhatsApp
             </v-btn>
           </a>
-          <a href="https://t.me/BaBoloMarket&text=Салом, я оформил заказ с сайта shop.bolo.tj" target="_blank">
+          <a href="https://t.me/BaBoloMarket?text=Салом, я оформил заказ с сайта shop.bolo.tj" target="_blank">
             <v-btn color="primary" text>
               Telegram
             </v-btn>
